@@ -28,7 +28,6 @@ export default class Index extends Component {
   }
 
   componentDidMount() {
-    pageInstance = this;
     this.manualSetOption();
   }
 
@@ -92,7 +91,6 @@ export default class Index extends Component {
 }
 
 function initChart(canvas, width, height, dpr) {
-  debugger
   const chart = echarts.init(canvas, null, {
     width: width,
     height: height,
@@ -100,7 +98,7 @@ function initChart(canvas, width, height, dpr) {
   });
   canvas.setChart(chart);
 
-  echarts.registerMap('ninxia', geoJson);
+  echarts.registerMap('henan', geoJson);
 
   const option = {
     tooltip: {
@@ -113,7 +111,7 @@ function initChart(canvas, width, height, dpr) {
     },
     series: [{
       type: 'map',
-      mapType: 'ninxia',
+      mapType: 'henan',
       label: {
         normal: {
           show: true

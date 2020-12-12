@@ -28,7 +28,6 @@ export default class Index extends Component {
   }
 
   componentDidMount() {
-    pageInstance = this;
     this.manualSetOption();
   }
 

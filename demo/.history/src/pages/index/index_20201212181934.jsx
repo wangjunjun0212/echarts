@@ -28,7 +28,6 @@ export default class Index extends Component {
   }
 
   componentDidMount() {
-    pageInstance = this;
     this.manualSetOption();
   }
 
@@ -49,7 +48,7 @@ export default class Index extends Component {
         <View className="line-chart">
           {/* 通过组件实例设置数据，并自定义echarts的初始化 */}
           <EChart echarts={echarts} option={option} onInit={this.onInit} />
-          <EChart echarts={echarts}  onInit={initChart} />
+          <EChart echarts={echarts}  onInit={this.initChart} option={option}/>
         </View>
       </View>
     );
@@ -88,68 +87,67 @@ export default class Index extends Component {
     return chart; // 必须return
   };
 
-
-}
-
-function initChart(canvas, width, height, dpr) {
-  debugger
-  const chart = echarts.init(canvas, null, {
-    width: width,
-    height: height,
-    devicePixelRatio: dpr // new
-  });
-  canvas.setChart(chart);
-
-  echarts.registerMap('ninxia', geoJson);
-
-  const option = {
-    tooltip: {
-      trigger: 'item',
-      triggerOn: 'click',
-      formatter: function (e, t, n) {
-        pageInstance.BindEvent(e);
-        return e.name
-      }
-    },
-    series: [{
-      type: 'map',
-      mapType: 'ninxia',
-      label: {
-        normal: {
-          show: true
-        },
-        emphasis: {
-          textStyle: {
-            color: '#fff'
+  initChart(canvas, width, height, dpr) {
+    const chart = echarts.init(canvas, null, {
+      width: width,
+      height: height,
+      devicePixelRatio: dpr // new
+    });
+    canvas.setChart(chart);
+  
+    echarts.registerMap('henan', geoJson);
+  
+    const option = {
+      tooltip: {
+        trigger: 'item',
+        triggerOn: 'click',
+        formatter: function (e, t, n) {
+          pageInstance.BindEvent(e);
+          return e.name
+        }
+      },
+      series: [{
+        type: 'map',
+        mapType: 'henan',
+        label: {
+          normal: {
+            show: true
+          },
+          emphasis: {
+            textStyle: {
+              color: '#fff'
+            }
           }
-        }
-      },
-      itemStyle: {
-
-        normal: {
-          borderColor: '#08C062',
-          areaColor: '#fff',
-          borderWidth: 1
         },
-        emphasis: {
-          borderColor: "#78A4FA",
-          areaColor: '#08C062',
-          shadowOffsetX: 0,
-          shadowOffsetY: 0,
-          borderWidth: 2
-        }
-      },
-      animation: false,
-      data: []
+        itemStyle: {
+  
+          normal: {
+            borderColor: '#08C062',
+            areaColor: '#fff',
+            borderWidth: 1
+          },
+          emphasis: {
+            borderColor: "#78A4FA",
+            areaColor: '#08C062',
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            borderWidth: 2
+          }
+        },
+        animation: false,
+        data: []
+  
+      }],
+  
+    };
+  
+    chart.setOption(option);
+  
+    return chart;
+  }
 
-    }],
-
-  };
-
-  chart.setOption(option);
-
-  return chart;
 }
+
 function getOption(xData, yData) {
   return {
     title: {

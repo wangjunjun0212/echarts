@@ -11,6 +11,64 @@ const yData = ["2", "50", "20", "40", "60", "5", "6"];
 
 
 let pageInstance = {}
+function initChart(canvas, width, height, dpr) {
+  const chart = echarts.init(canvas, null, {
+    width: width,
+    height: height,
+    devicePixelRatio: dpr // new
+  });
+  canvas.setChart(chart);
+
+  echarts.registerMap('henan', geoJson);
+
+  const option = {
+    tooltip: {
+      trigger: 'item',
+      triggerOn: 'click',
+      formatter: function (e, t, n) {
+        pageInstance.BindEvent(e);
+        return e.name
+      }
+    },
+    series: [{
+      type: 'map',
+      mapType: 'henan',
+      label: {
+        normal: {
+          show: true
+        },
+        emphasis: {
+          textStyle: {
+            color: '#fff'
+          }
+        }
+      },
+      itemStyle: {
+
+        normal: {
+          borderColor: '#08C062',
+          areaColor: '#fff',
+          borderWidth: 1
+        },
+        emphasis: {
+          borderColor: "#78A4FA",
+          areaColor: '#08C062',
+          shadowOffsetX: 0,
+          shadowOffsetY: 0,
+          borderWidth: 2
+        }
+      },
+      animation: false,
+      data: []
+
+    }],
+
+  };
+
+  chart.setOption(option);
+
+  return chart;
+}
 
 export default class Index extends Component {
   chart = React.createRef();
@@ -28,7 +86,6 @@ export default class Index extends Component {
   }
 
   componentDidMount() {
-    pageInstance = this;
     this.manualSetOption();
   }
 
@@ -87,69 +144,8 @@ export default class Index extends Component {
     });
     return chart; // 必须return
   };
-
-
 }
 
-function initChart(canvas, width, height, dpr) {
-  debugger
-  const chart = echarts.init(canvas, null, {
-    width: width,
-    height: height,
-    devicePixelRatio: dpr // new
-  });
-  canvas.setChart(chart);
-
-  echarts.registerMap('ninxia', geoJson);
-
-  const option = {
-    tooltip: {
-      trigger: 'item',
-      triggerOn: 'click',
-      formatter: function (e, t, n) {
-        pageInstance.BindEvent(e);
-        return e.name
-      }
-    },
-    series: [{
-      type: 'map',
-      mapType: 'ninxia',
-      label: {
-        normal: {
-          show: true
-        },
-        emphasis: {
-          textStyle: {
-            color: '#fff'
-          }
-        }
-      },
-      itemStyle: {
-
-        normal: {
-          borderColor: '#08C062',
-          areaColor: '#fff',
-          borderWidth: 1
-        },
-        emphasis: {
-          borderColor: "#78A4FA",
-          areaColor: '#08C062',
-          shadowOffsetX: 0,
-          shadowOffsetY: 0,
-          borderWidth: 2
-        }
-      },
-      animation: false,
-      data: []
-
-    }],
-
-  };
-
-  chart.setOption(option);
-
-  return chart;
-}
 function getOption(xData, yData) {
   return {
     title: {
